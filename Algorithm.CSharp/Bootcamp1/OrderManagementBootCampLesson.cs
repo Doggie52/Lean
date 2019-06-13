@@ -2,7 +2,6 @@
 
 using QuantConnect.Data;
 using QuantConnect.Orders;
-using QuantConnect.Securities;
 
 namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 {
@@ -14,7 +13,7 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 		// END TASK 2
 
 		// Main asset we intend to trade
-		private Security _mainAsset;
+		private string _mainAssetTicker = "SPY";
 
 		// Stop loss price as a percentage of main asset close price
 		private decimal _stopLossRatio = 0.90m;
@@ -30,35 +29,21 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 		private OrderTicket _takeProfitTicket;
 		// END TASK 5
 
-		// BEGIN TASK 4
-		private Chart _mainChart = new Chart( "Data chart" );
-		// END TASK 4
-
 		public override void Initialize()
 		{
 			SetStartDate( 2018, 12, 1 );
 			SetEndDate( 2019, 4, 1 );
 			SetCash( 100000 );
 
-			_mainAsset = AddSecurity( SecurityType.Equity, "SPY", Resolution.Daily );
-
-			// BEGIN TASK 4
-			// Create data series in main chart
-			_mainChart.AddSeries( new Series( "Asset price" ) );
-			_mainChart.AddSeries( new Series( "Stop loss price" ) );
-			// END TASK 4
-
-			// BEGIN TASK 5
-			_mainChart.AddSeries( new Series( "Take profit price" ) );
-			// END TASK 5
+			AddSecurity( SecurityType.Equity, _mainAssetTicker, Resolution.Daily );
 		}
 
 		public override void OnData( Slice slice )
 		{
 
 			// BEGIN TASK 4
-			// Plot the asset price
-			Plot( "Data chart", "Asset price", _mainAsset.Close );
+			// Plot the asset price in a separate chart
+			Plot( "Data chart", "Asset price", Securities[_mainAssetTicker].Close );
 			// END TASK 4
 
 			// BEGIN TASK 2
@@ -71,14 +56,14 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 				// We are not yet invested
 
 				// Create market order for some units of SPY
-				MarketOrder( _mainAsset.Symbol, 500 );
+				MarketOrder( Securities[_mainAssetTicker].Symbol, 500 );
 
 				// Create stop loss through a stop market order
-				_stopLossTicket = StopMarketOrder( _mainAsset.Symbol, -500, _stopLossRatio * _mainAsset.Close );
+				_stopLossTicket = StopMarketOrder( Securities[_mainAssetTicker].Symbol, -500, _stopLossRatio * Securities[_mainAssetTicker].Close );
 
 				// BEGIN TASK 5
 				// Create take profit through a limit order
-				_takeProfitTicket = LimitOrder( _mainAsset.Symbol, -500, _takeProfitRatio * _mainAsset.Close );
+				_takeProfitTicket = LimitOrder( Securities[_mainAssetTicker].Symbol, -500, _takeProfitRatio * Securities[_mainAssetTicker].Close );
 				// END TASK 5
 
 			} else {
@@ -86,8 +71,8 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 
 				// BEGIN TASK 3
 				// Update stop loss price if main asset has risen by 1% or more since we last updated the stop loss
-				if ( _mainAsset.Close >= 1.01m * ( _stopLossTicket.Get( OrderField.StopPrice ) / _stopLossRatio ) ) {
-					_stopLossTicket.Update( new UpdateOrderFields() { StopPrice = _mainAsset.Close * _stopLossRatio } );
+				if ( Securities[_mainAssetTicker].Close >= 1.01m * ( _stopLossTicket.Get( OrderField.StopPrice ) / _stopLossRatio ) ) {
+					_stopLossTicket.Update( new UpdateOrderFields() { StopPrice = Securities[_mainAssetTicker].Close * _stopLossRatio } );
 				}
 				// END TASK 3
 

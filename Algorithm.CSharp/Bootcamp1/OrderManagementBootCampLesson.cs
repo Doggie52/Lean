@@ -96,7 +96,7 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 				return;
 
 			// Log order fill price (can be extended to log more information)
-			Log( $"[{Time}] Order filled for {orderEvent.FillQuantity} units at {orderEvent.FillPrice}." );
+			Log( $"{orderEvent.FillPrice}" );
 
 			// Check if we hit our stop loss
 			// @todo clean

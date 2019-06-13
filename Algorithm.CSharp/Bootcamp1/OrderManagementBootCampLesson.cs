@@ -44,12 +44,12 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 
 			// BEGIN TASK 4
 			// Create data series in main chart
-			_mainChart.AddSeries( new Series( "Asset price", SeriesType.Line, "$" ) );
-			_mainChart.AddSeries( new Series( "Stop loss price", SeriesType.Line, "$" ) );
+			_mainChart.AddSeries( new Series( "Asset price" ) );
+			_mainChart.AddSeries( new Series( "Stop loss price" ) );
 			// END TASK 4
 
 			// BEGIN TASK 5
-			_mainChart.AddSeries( new Series( "Take profit price", SeriesType.Line, "$" ) );
+			_mainChart.AddSeries( new Series( "Take profit price" ) );
 			// END TASK 5
 		}
 
@@ -62,7 +62,7 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 			// END TASK 4
 
 			// BEGIN TASK 2
-			// Check that at least 10 days have passed since we last hit our limit order
+			// Check that at least 10 days (~2 weeks) have passed since we last hit our limit order
 			if ( ( Time - _lastLimitHitAt ).TotalDays < 10 )
 				return;
 			// END TASK 2
@@ -70,18 +70,15 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 			if ( !Portfolio.Invested ) {
 				// We are not yet invested
 
-				// Create market order for [100] units of SPY
-				MarketOrder( _mainAsset.Symbol, 100 );
-				Debug( $"[{Time}] buying 100 units" );
+				// Create market order for some units of SPY
+				MarketOrder( _mainAsset.Symbol, 500 );
 
 				// Create stop loss through a stop market order
-				_stopLossTicket = StopMarketOrder( _mainAsset.Symbol, -100, _stopLossRatio * _mainAsset.Close );
-				Debug( $"[{Time}] created stop loss: {_stopLossTicket}" );
+				_stopLossTicket = StopMarketOrder( _mainAsset.Symbol, -500, _stopLossRatio * _mainAsset.Close );
 
 				// BEGIN TASK 5
 				// Create take profit through a limit order
-				_takeProfitTicket = LimitOrder( _mainAsset.Symbol, -100, _takeProfitRatio * _mainAsset.Close );
-				Debug( $"[{Time}] created take profit: {_takeProfitTicket}" );
+				_takeProfitTicket = LimitOrder( _mainAsset.Symbol, -500, _takeProfitRatio * _mainAsset.Close );
 				// END TASK 5
 
 			} else {
@@ -90,9 +87,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 				// BEGIN TASK 3
 				// Update stop loss price if main asset has risen by 1% or more since we last updated the stop loss
 				if ( _mainAsset.Close >= 1.01m * ( _stopLossTicket.Get( OrderField.StopPrice ) / _stopLossRatio ) ) {
-
-					Debug( $"[{Time}] new stop price: {_mainAsset.Close * _stopLossRatio}" );
-
 					_stopLossTicket.Update( new UpdateOrderFields() { StopPrice = _mainAsset.Close * _stopLossRatio } );
 				}
 				// END TASK 3
@@ -124,8 +118,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 			if ( _stopLossTicket != null && orderEvent.OrderId == _stopLossTicket.OrderId ) {
 				_lastLimitHitAt = Time;
 
-				Debug( $"[{Time}] stop loss hit! cancelling tp" );
-
 				// BEGIN TASK 5
 				// Cancel the take profit, we no longer need it
 				_takeProfitTicket.Cancel();
@@ -138,8 +130,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 			// @todo clean
 			else if ( _takeProfitTicket != null && orderEvent.OrderId == _takeProfitTicket.OrderId ) {
 				_lastLimitHitAt = Time;
-
-				Debug( $"[{Time}] take profit hit! cancelling sl" );
 
 				// Cancel the stop loss, we no longer need it
 				_stopLossTicket.Cancel();

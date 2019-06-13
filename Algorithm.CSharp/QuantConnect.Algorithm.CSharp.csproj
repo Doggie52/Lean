@@ -141,6 +141,7 @@
     <Compile Include="BasicSetAccountCurrencyAlgorithm.cs" />
     <Compile Include="Benchmarks\StatefulCoarseUniverseSelectionBenchmark.cs" />
     <Compile Include="Benchmarks\StatelessCoarseUniverseSelectionBenchmark.cs" />
+    <Compile Include="Bootcamp1\OrderManagementBootCampLesson.cs" />
     <Compile Include="CapmAlphaRankingFrameworkAlgorithm.cs" />
     <Compile Include="G10CurrencySelectionModelFrameworkAlgorithm.cs" />
     <Compile Include="ExpiryHelperAlphaModelFrameworkAlgorithm.cs" />

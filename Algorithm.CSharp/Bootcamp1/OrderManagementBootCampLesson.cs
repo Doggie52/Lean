@@ -61,10 +61,10 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 				// We are not yet invested
 
 				// Create market order for some units of SPY
-				MarketOrder( Securities[_mainAssetTicker].Symbol, 500 );
+				MarketOrder( _mainAssetTicker, 500 );
 
 				// Create stop loss through a stop market order
-				_stopLossTicket = StopMarketOrder( Securities[_mainAssetTicker].Symbol, -500, _stopLossRatio * Securities[_mainAssetTicker].Close );
+				_stopLossTicket = StopMarketOrder( _mainAssetTicker, -500, _stopLossRatio * Securities[_mainAssetTicker].Close );
 
 				// BEGIN TASK 4
 				// Store current price as the highest price
@@ -73,7 +73,7 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 
 				// BEGIN TASK 5
 				// Create take profit through a limit order
-				_takeProfitTicket = LimitOrder( Securities[_mainAssetTicker].Symbol, -500, _takeProfitRatio * Securities[_mainAssetTicker].Close );
+				_takeProfitTicket = LimitOrder( _mainAssetTicker, -500, _takeProfitRatio * Securities[_mainAssetTicker].Close );
 				// END TASK 5
 
 			} else {

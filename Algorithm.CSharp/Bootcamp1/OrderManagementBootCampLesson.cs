@@ -108,7 +108,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 
 			// BEGIN TASK 3
 			// Check if we hit our stop loss
-			// @todo clean
 			if ( _stopLossTicket != null && orderEvent.OrderId == _stopLossTicket.OrderId ) {
 				_lastLimitHitAt = Time;
 
@@ -121,7 +120,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 
 			// BEGIN TASK 5
 			// Check if we hit our take profit
-			// @todo clean
 			else if ( _takeProfitTicket != null && orderEvent.OrderId == _takeProfitTicket.OrderId ) {
 				_lastLimitHitAt = Time;
 

@@ -7,7 +7,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 {
 	class OrderManagementBootCampLesson : QCAlgorithm
 	{
-
 		// Main asset we intend to trade
 		private string _mainAssetTicker = "SPY";
 
@@ -46,7 +45,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 
 		public override void OnData( Slice slice )
 		{
-
 			// BEGIN TASK 7
 			// Plot the asset price in a separate chart
 			Plot( "Data chart", "Asset price", Securities[_mainAssetTicker].Close );
@@ -77,7 +75,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 				// END TASK 5
 
 			} else {
-				// We are already invested
 
 				// BEGIN TASK 4
 				// Update stop loss price if main asset has risen above its highest price

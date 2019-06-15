@@ -8,10 +8,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 	class OrderManagementBootCampLesson : QCAlgorithm
 	{
 
-		// BEGIN TASK 3
-		private DateTime _lastLimitHitAt;
-		// END TASK 3
-
 		// Main asset we intend to trade
 		private string _mainAssetTicker = "SPY";
 
@@ -20,6 +16,11 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 
 		// Order ticket for our stop loss
 		private OrderTicket _stopLossTicket;
+
+		// BEGIN TASK 3
+		// Datetime when stop loss or take profit was last hit
+		private DateTime _lastLimitHitAt;
+		// END TASK 3
 
 		// BEGIN TASK 4
 		// The highest close price our main asset has achieved since placing our market order
@@ -58,7 +59,6 @@ namespace QuantConnect.Algorithm.CSharp.Bootcamp1
 			// END TASK 3
 
 			if ( !Portfolio.Invested ) {
-				// We are not yet invested
 
 				// Create market order for some units of SPY
 				MarketOrder( _mainAssetTicker, 500 );

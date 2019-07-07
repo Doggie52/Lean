@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.IO;
 using QuantConnect.Configuration;
 using QuantConnect.ToolBox.AlgoSeekFuturesConverter;
 using QuantConnect.ToolBox.AlgoSeekOptionsConverter;
@@ -24,11 +25,13 @@ using QuantConnect.ToolBox.CoarseUniverseGenerator;
 using QuantConnect.ToolBox.CoinApiDataConverter;
 using QuantConnect.ToolBox.CryptoiqDownloader;
 using QuantConnect.ToolBox.DukascopyDownloader;
+using QuantConnect.ToolBox.EstimizeDataDownloader;
 using QuantConnect.ToolBox.FxcmDownloader;
 using QuantConnect.ToolBox.FxcmVolumeDownload;
 using QuantConnect.ToolBox.GDAXDownloader;
 using QuantConnect.ToolBox.IBDownloader;
 using QuantConnect.ToolBox.IEX;
+using QuantConnect.ToolBox.IQFeedDownloader;
 using QuantConnect.ToolBox.IVolatilityEquityConverter;
 using QuantConnect.ToolBox.KaikoDataConverter;
 using QuantConnect.ToolBox.KrakenDownloader;
@@ -37,6 +40,8 @@ using QuantConnect.ToolBox.OandaDownloader;
 using QuantConnect.ToolBox.QuandlBitfinexDownloader;
 using QuantConnect.ToolBox.QuantQuoteConverter;
 using QuantConnect.ToolBox.RandomDataGenerator;
+using QuantConnect.ToolBox.SECDataDownloader;
+using QuantConnect.ToolBox.TradingEconomicsDataDownloader;
 using QuantConnect.ToolBox.YahooDownloader;
 using QuantConnect.Util;
 
@@ -91,7 +96,11 @@ namespace QuantConnect.ToolBox
                         break;
                     case "iexdl":
                     case "iexdownloader":
-                        IEXDownloaderProgram.IEXDownloader(tickers, resolution, fromDate, toDate);
+                        IEXDownloaderProgram.IEXDownloader(tickers, resolution, fromDate, toDate, GetParameterOrExit(optionsObject, "api-key"));
+                        break;
+                    case "iqfdl":
+                    case "iqfeeddownloader":
+                        IQFeedDownloaderProgram.IQFeedDownloader(tickers, resolution, fromDate, toDate);
                         break;
                     case "kdl":
                     case "krakendownloader":
@@ -113,9 +122,39 @@ namespace QuantConnect.ToolBox
                     case "bitfinexdownloader":
                         BitfinexDownloaderProgram.BitfinexDownloader(tickers, resolution, fromDate, toDate);
                         break;
+                    case "secdl":
+                    case "secdownloader":
+                        var equityFolder = Path.Combine(Globals.DataFolder, "equity", Market.USA);
+                        var secFolder = Path.Combine(Globals.DataFolder, "alternative", "sec");
+
+                        SECDataDownloaderProgram.SECDataDownloader(
+                            GetParameterOrDefault(optionsObject, "source-dir", Path.Combine(secFolder, "raw-sec")),
+                            GetParameterOrDefault(optionsObject, "destination-dir", secFolder),
+                            fromDate,
+                            toDate,
+                            GetParameterOrDefault(
+                                optionsObject,
+                                "source-meta-dir",
+                                Path.Combine(equityFolder, "daily")
+                            )
+                        );
+                        break;
+                    case "ecdl":
+                    case "estimizeconsensusdownloader":
+                        EstimizeConsensusDataDownloaderProgram.EstimizeConsensusDataDownloader();
+                        break;
+                    case "eedl":
+                    case "estimizeestimatedownloader":
+                        EstimizeEstimateDataDownloaderProgram.EstimizeEstimateDataDownloader();
+                        break;
+                    case "erdl":
+                    case "estimizereleasedownloader":
+                        EstimizeReleaseDataDownloaderProgram.EstimizeReleaseDataDownloader();
+                        break;
                     default:
                         PrintMessageAndExit(1, "ERROR: Unrecognized --app value");
                         break;
+
                 }
             }
             else

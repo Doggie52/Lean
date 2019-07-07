@@ -143,6 +143,8 @@
     <Compile Include="Benchmarks\StatelessCoarseUniverseSelectionBenchmark.cs" />
     <Compile Include="Bootcamp1\OrderManagementBootCampLesson.cs" />
     <Compile Include="CapmAlphaRankingFrameworkAlgorithm.cs" />
+    <Compile Include="OnEndOfDayRegressionAlgorithm.cs" />
+    <Compile Include="SECReportDataAlgorithm.cs" />
     <Compile Include="G10CurrencySelectionModelFrameworkAlgorithm.cs" />
     <Compile Include="ExpiryHelperAlphaModelFrameworkAlgorithm.cs" />
     <Compile Include="CfdTimeZonesRegressionAlgorithm.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="StartingCapitalRegressionAlgorithm.cs" />
     <Compile Include="StopLossOnOrderEventRegressionAlgorithm.cs" />
     <Compile Include="TotalPortfolioValueRegressionAlgorithm.cs" />
+    <Compile Include="TradingEconomicsCalendarIndicatorAlgorithm.cs" />
     <Compile Include="TrailingStopRiskFrameworkAlgorithm.cs" />
     <Compile Include="BasicTemplateFuturesFrameworkAlgorithm.cs" />
     <Compile Include="BasicTemplateOptionsFrameworkAlgorithm.cs" />
@@ -261,6 +264,7 @@
     <Compile Include="UniverseSelectionDefinitionsAlgorithm.cs" />
     <Compile Include="UniverseSharingSecurityDifferentSubscriptionRequestRegressionAlgorithm.cs" />
     <Compile Include="UniverseSharingSubscriptionRequestRegressionAlgorithm.cs" />
+    <Compile Include="EstimizeDataAlgorithm.cs" />
     <Compile Include="USEnergyInformationAdministrationAlgorithm.cs" />
     <Compile Include="UserDefinedUniverseAlgorithm.cs" />
     <Compile Include="VolumeWeightedAveragePriceExecutionModelRegressionAlgorithm.cs" />
